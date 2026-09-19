@@ -8,3 +8,6 @@ __pycache__/
 *.tfstate
 *.tfstate.*
 *.tfvars
+
+.pytest_cache/
+.ruff_cache/
