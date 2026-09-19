@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ai-notes
+  labels:
+    app: ai-notes
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ai-notes
+  template:
+    metadata:
+      labels:
+        app: ai-notes
+    spec:
+      containers:
+        - name: ai-notes
+          image: ghcr.io/ulag-byte/ai-notes:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          envFrom:
+            - configMapRef:
+                name: ai-notes-config
+          readinessProbe:          # "ready to receive traffic?"
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:           # "still alive? if not, restart me"
+            httpGet:
+              path: /health
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
