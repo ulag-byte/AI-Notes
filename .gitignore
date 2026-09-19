@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+
+# Terraform (added now so state/secrets never get committed later)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
